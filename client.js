@@ -20,7 +20,11 @@ function readyNow(){
   $('#submit').on('click', submitEmployees);
 }
 
-function addEmployee(){
+function addEmployee(first, last, iD, title, salary){
+  let newEmployee = new Employee(first, last, iD, title, salary);
+  allEmployees.push(newEmployee);
+  console.log('in addEmployee, new employee: ' + newEmployee);
+  console.log(newEmployee.title);
 
 }
 
@@ -28,11 +32,44 @@ function submitEmployees(){
   console.log('in submitEmployees');
   let firstName = $('#employeeFirstName').val();
   let lastName = $('#employeeLastName').val();
-  let iDnum = $('#employeeID').val();
+  let iDNum = $('#employeeID').val();
   let title = $('#employeeTitle').val();
   let salary = $('#employeeSalary').val();
 
   console.log('firstName: ' + firstName + 'lastName ' + lastName + 'idnum '
-                            + iDnum + "title: " + title + 'salary: ' +salary);
+                            + iDNum + "title: " + title + 'salary: ' +salary);
+  addEmployee(firstName, lastName, iDNum, title, salary);
+  clearInputs();
+  addToDom();
 
 }
+
+function clearInputs(){
+  $('#employeeFirstName').val('');
+  $('#employeeLastName').val('');
+  $('#employeeID').val('');
+  $('#employeeTitle').val('');
+  $('#employeeSalary').val('');
+}
+
+function addToDom(){
+  let index = newestEmployee();
+  let table = $('<tr></tr>');
+  table.append('<td>'+allEmployees[index].firstName+'</td>');
+  table.append('<td>'+allEmployees[index].lastName+'</td>');
+  table.append('<td>'+allEmployees[index].iDNumber+'</td>');
+  table.append('<td>'+allEmployees[index].title+'</td>');
+  table.append('<td>'+allEmployees[index].salary+'</td>');
+  $('#table').append(table);
+
+
+}
+
+function newestEmployee(){
+  return allEmployees.length -1;
+}
+
+
+
+
+//end
