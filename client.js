@@ -41,6 +41,7 @@ function submitEmployees(){
   addEmployee(firstName, lastName, iDNum, title, salary);
   clearInputs();
   addToDom();
+  addSalaryToDom();
 
 }
 
@@ -59,16 +60,28 @@ function addToDom(){
   table.append('<td>'+allEmployees[index].lastName+'</td>');
   table.append('<td>'+allEmployees[index].iDNumber+'</td>');
   table.append('<td>'+allEmployees[index].title+'</td>');
-  table.append('<td>'+allEmployees[index].salary+'</td>');
+  table.append('<td class="salaryInTable">'+allEmployees[index].salary+'</td>');
   $('#table').append(table);
-
-
 }
 
 function newestEmployee(){
   return allEmployees.length -1;
 }
 
+function monthlyCost(){
+  let totalSalaryCost=0;
+  allEmployees.forEach(function(employee){
+    totalSalaryCost+=parseInt(employee.salary);
+  });
+  totalSalaryCost=totalSalaryCost/12;
+  console.log('in montly Cost' + totalSalaryCost);
+  return totalSalaryCost;
+}
+
+function addSalaryToDom(){
+  let monthlyExpenses = monthlyCost();
+  $('#totalSalaryH3').text('Monthly Cost: '+ monthlyExpenses);
+}
 
 
 
