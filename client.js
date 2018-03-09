@@ -42,6 +42,7 @@ function submitEmployees(){
   clearInputs();
   addToDom();
   addSalaryToDom();
+  checkIfOverBudget();
 
 }
 
@@ -81,6 +82,12 @@ function monthlyCost(){
 function addSalaryToDom(){
   let monthlyExpenses = monthlyCost();
   $('#totalSalaryH3').text('Monthly Cost: '+ monthlyExpenses);
+}
+
+function checkIfOverBudget(){
+  if(monthlyCost()>20000){
+    $('#totalSalaryH3').addClass('red');
+  }
 }
 
 
