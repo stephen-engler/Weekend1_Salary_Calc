@@ -28,4 +28,11 @@ function submitEmployees(){
   console.log('in submitEmployees');
   let firstName = $('#employeeFirstName').val();
   let lastName = $('#employeeLastName').val();
+  let iDnum = $('#employeeID').val();
+  let title = $('#employeeTitle').val();
+  let salary = $('#employeeSalary').val();
+
+  console.log('firstName: ' + firstName + 'lastName ' + lastName + 'idnum '
+                            + iDnum + "title: " + title + 'salary: ' +salary);
+
 }
