@@ -18,14 +18,7 @@ $(document).ready(readyNow);
 function readyNow(){
   console.log("in jq: readyNow");
   $('#submit').on('click', submitEmployees);
-}
-
-function addEmployee(first, last, iD, title, salary){
-  let newEmployee = new Employee(first, last, iD, title, salary);
-  allEmployees.push(newEmployee);
-  console.log('in addEmployee, new employee: ' + newEmployee);
-  console.log(newEmployee.title);
-
+  $('#table').on('click', '.deleteButton', deleteTheEmployee);
 }
 
 function submitEmployees(){
@@ -36,13 +29,21 @@ function submitEmployees(){
   let title = $('#employeeTitle').val();
   let salary = $('#employeeSalary').val();
 
-  console.log('firstName: ' + firstName + 'lastName ' + lastName + 'idnum '
-                            + iDNum + "title: " + title + 'salary: ' +salary);
+  console.log('firstName: ' + firstName + 'lastName ' + lastName + 'idnum '+
+                      iDNum + "title: " + title + 'salary: ' +salary);
   addEmployee(firstName, lastName, iDNum, title, salary);
   clearInputs();
   addToDom();
   addSalaryToDom();
   checkIfOverBudget();
+
+}
+
+function addEmployee(first, last, iD, title, salary){
+  let newEmployee = new Employee(first, last, iD, title, salary);
+  allEmployees.push(newEmployee);
+  console.log('in addEmployee, new employee: ' + newEmployee);
+  console.log(newEmployee.title);
 
 }
 
@@ -62,6 +63,8 @@ function addToDom(){
   table.append('<td>'+allEmployees[index].iDNumber+'</td>');
   table.append('<td>'+allEmployees[index].title+'</td>');
   table.append('<td class="salaryInTable">'+allEmployees[index].salary+'</td>');
+  table.append('<td><button class="deleteButton">Delete</button> </td>');
+
   $('#table').append(table);
 }
 
@@ -75,6 +78,7 @@ function monthlyCost(){
     totalSalaryCost+=parseInt(employee.salary);
   });
   totalSalaryCost=totalSalaryCost/12;
+  totalSalaryCost=totalSalaryCost.toFixed(2);
   console.log('in montly Cost' + totalSalaryCost);
   return totalSalaryCost;
 }
@@ -90,6 +94,9 @@ function checkIfOverBudget(){
   }
 }
 
+function deleteTheEmployee(){
+  console.log('in deleteTheEmployee');
+}
 
 
 //end
