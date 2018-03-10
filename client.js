@@ -33,9 +33,10 @@ function submitEmployees(){
 
   console.log('firstName: ' + firstName + 'lastName ' + lastName + 'idnum '+
                       iDNum + "title: " + title + 'salary: ' +salary);
-  addEmployee(firstName, lastName, iDNum, title, salary);
+  let newEmployee = addEmployee(firstName, lastName, iDNum, title, salary);
+
   clearInputs();
-  addToDom();
+  addToDom(newEmployee);
   addSalaryToDom();
   checkIfOverBudget();
   findSalaries();
@@ -45,8 +46,9 @@ function submitEmployees(){
 function addEmployee(first, last, iD, title, salary){
   let newEmployee = new Employee(first, last, iD, title, salary);
   allEmployees.push(newEmployee);
-  console.log('in addEmployee, new employee: ' + newEmployee);
-  console.log(newEmployee.title);
+  //console.log('in addEmployee, new employee: ' + newEmployee);
+
+  return newEmployee;
 
 }
 
@@ -59,32 +61,38 @@ function clearInputs(){
 }
 
 //adds the newest employee to the table
-function addToDom(){
-  let index = newestEmployee();//gets index of newest employee
+function addToDom(newEmployee){
+
   let table = $('<tr class="employeeRow"></tr>');//makes the initial table row
-  table.append('<td>'+allEmployees[index].firstName+'</td>');//appends the employee
-  table.append('<td>'+allEmployees[index].lastName+'</td>');//in the employee array at index
-  table.append('<td>'+allEmployees[index].iDNumber+'</td>');//.something
-  table.append('<td>'+allEmployees[index].title+'</td>');
-  table.append('<td class="salaryInTable">'+allEmployees[index].salary+'</td>');
+
+
+  table.append('<td>'+newEmployee.firstName+'</td>');
+  table.append('<td>'+newEmployee.lastName+'</td>');
+  table.append('<td>'+newEmployee.iDNumber+'</td>');
+  table.append('<td>'+newEmployee.title+'</td>');
+  table.append('<td class="salaryInTable">'+newEmployee.salary+'</td>');
   table.append('<td><button class="deleteButton employeeRow">Delete</button> </td>');
+
+
+  $("#table").data('salary', newEmployee.salary);
+  $('#table').data('iDNumber', newEmployee.iDNumber);
+  console.log('test for data: ' + $("#table").data('salary'));
 
   $('#table').append(table);
 }
 
-function newestEmployee(){
-  return allEmployees.length -1;
-}
+
+
 
 function monthlyCost(){
-  let totalSalaryCost=0;
+  let monthCost=0;
   allEmployees.forEach(function(employee){
-    totalSalaryCost+=parseInt(employee.salary);
+    monthCost+=parseInt(employee.salary);
   });
-  totalSalaryCost=totalSalaryCost/12;
-  totalSalaryCost=totalSalaryCost.toFixed(2);
-  console.log('in montly Cost' + totalSalaryCost);
-  return totalSalaryCost;
+  monthCost=monthCost/12;
+  monthCost=monthCost.toFixed(2);
+  console.log('in montly Cost' + monthCost);
+  return monthCost;
 }
 
 function addSalaryToDom(){
@@ -97,20 +105,17 @@ function checkIfOverBudget(){
     $('#totalSalaryH3').addClass('red');
   }
 }
-//there has to be a way to associate the button with the row...
-//can count the number of rows and use dom traveral..
+
+
 function deleteTheEmployee(){
-  console.log('in deleteTheEmployee');
-  console.log($(this));
+  // console.log('in deleteTheEmployee');
+  // console.log($(this));
   $(this).parent().parent().remove();
 }
 
 //find all things with the class salaryInTable
 function findSalaries(){
 
-  totalMonthlyExpenses += parseInt($('.salaryInTable').text());
-  console.log('in findSalaries after parseInt' + totalMonthlyExpenses);
-  totalMonthlyExpenses=totalMonthlyExpenses/12;
-  console.log('in findSalaries after /12' + totalMonthlyExpenses);
+
 }
 //end
