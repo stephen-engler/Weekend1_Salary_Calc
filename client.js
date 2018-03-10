@@ -19,10 +19,12 @@ $(document).ready(readyNow);
 
 function readyNow(){
   console.log("in jq: readyNow");
-  $('#submit').on('click', submitEmployees);
-  $('#table').on('click', '.deleteButton', deleteTheEmployee);
+  $('#submit').on('click', submitEmployees);//on click runs submitEmployees func
+  $('#table').on('click', '.deleteButton', deleteTheEmployee);//runds deleteTheEmployee
 }
 
+//gets the vals of user input
+//makes new employe class
 function submitEmployees(){
   console.log('in submitEmployees');
   let firstName = $('#employeeFirstName').val();
@@ -39,7 +41,7 @@ function submitEmployees(){
   addToDom(newEmployee);
   addSalaryToDom();
   checkIfOverBudget();
-  findSalaries();
+
 
 }
 
@@ -63,9 +65,10 @@ function clearInputs(){
 //adds the newest employee to the table
 function addToDom(newEmployee){
 
-  let table = $('<tr class="employeeRow"></tr>');//makes the initial table row
+  let table = $('<tr class="employeeRow" data-salary= '+newEmployee.salary+'></tr>');//makes the initial table row
 
 
+  table.append('<data value="'+newEmployee.salary+'">');
   table.append('<td>'+newEmployee.firstName+'</td>');
   table.append('<td>'+newEmployee.lastName+'</td>');
   table.append('<td>'+newEmployee.iDNumber+'</td>');
@@ -74,15 +77,13 @@ function addToDom(newEmployee){
   table.append('<td><button class="deleteButton employeeRow">Delete</button> </td>');
 
 
-  $("#table").data('salary', newEmployee.salary);
-  $('#table').data('iDNumber', newEmployee.iDNumber);
-  console.log('test for data: ' + $("#table").data('salary'));
+  $('#table').data(newEmployee.firstName , newEmployee.salary);
+  
+  console.log('test for data: ' + $('#table').data(newEmployee.firstName));
 
   $('#table').append(table);
+  console.log('in appendtoDom test table.data' + table.data('salary'));
 }
-
-
-
 
 function monthlyCost(){
   let monthCost=0;
@@ -106,16 +107,14 @@ function checkIfOverBudget(){
   }
 }
 
-
 function deleteTheEmployee(){
-  // console.log('in deleteTheEmployee');
-  // console.log($(this));
+  let salary = $(this).parent().parent().data('salary');
+
+  console.log(salary);
+
   $(this).parent().parent().remove();
-}
+  }
 
-//find all things with the class salaryInTable
-function findSalaries(){
-
-
+function getDeletedSalary(){
 }
 //end
