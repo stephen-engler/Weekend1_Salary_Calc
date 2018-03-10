@@ -39,7 +39,7 @@ function submitEmployees(){
 
   clearInputs();
   addToDom(newEmployee);
-  addSalaryToDom();
+  addSalaryToDom(monthlyCost());
   checkIfOverBudget();
 
 
@@ -65,7 +65,8 @@ function clearInputs(){
 //adds the newest employee to the table
 function addToDom(newEmployee){
 
-  let table = $('<tr class="employeeRow" data-salary= '+newEmployee.salary+'></tr>');//makes the initial table row
+  let table = $('<tr class="employeeRow" data-salary = "'+newEmployee.salary+
+                '" data-id = "'+newEmployee.iDNumber+'"></tr>');//makes the initial table row
 
 
   table.append('<data value="'+newEmployee.salary+'">');
@@ -78,7 +79,7 @@ function addToDom(newEmployee){
 
 
   $('#table').data(newEmployee.firstName , newEmployee.salary);
-  
+
   console.log('test for data: ' + $('#table').data(newEmployee.firstName));
 
   $('#table').append(table);
@@ -96,8 +97,8 @@ function monthlyCost(){
   return monthCost;
 }
 
-function addSalaryToDom(){
-  let monthlyExpenses = monthlyCost();
+function addSalaryToDom(monthlyExpenses){
+  //let monthlyExpenses = monthlyCost();
   $('#totalSalaryH3').text('Monthly Cost: '+ monthlyExpenses);
 }
 
@@ -108,13 +109,23 @@ function checkIfOverBudget(){
 }
 
 function deleteTheEmployee(){
-  let salary = $(this).parent().parent().data('salary');
+  let salary = $(this).parent().parent().data("salary");
+  let iDNumber = $(this).parent().parent().data("id");
 
-  console.log(salary);
+  removeDeletedEmployeeFromArray(iDNumber);
+
+  addSalaryToDom(monthlyCost());
 
   $(this).parent().parent().remove();
-  }
-
-function getDeletedSalary(){
 }
+
+function removeDeletedEmployeeFromArray(iDNumber){
+  let index = allEmployees.findIndex(function(employee){
+    return employee.iDNumber == iDNumber;
+  });
+  allEmployees.splice(index, 1);
+  console.log(allEmployees);
+}
+
+
 //end
