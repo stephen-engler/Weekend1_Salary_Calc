@@ -36,6 +36,7 @@ function submitEmployees(){
   addToDom();
   addSalaryToDom();
   checkIfOverBudget();
+  findSalaries();
 
 }
 
@@ -55,15 +56,16 @@ function clearInputs(){
   $('#employeeSalary').val('');
 }
 
+//adds the newest employee to the table
 function addToDom(){
-  let index = newestEmployee();
-  let table = $('<tr></tr>');
-  table.append('<td>'+allEmployees[index].firstName+'</td>');
-  table.append('<td>'+allEmployees[index].lastName+'</td>');
-  table.append('<td>'+allEmployees[index].iDNumber+'</td>');
+  let index = newestEmployee();//gets index of newest employee
+  let table = $('<tr class="employeeRow"></tr>');//makes the initial table row
+  table.append('<td>'+allEmployees[index].firstName+'</td>');//appends the employee
+  table.append('<td>'+allEmployees[index].lastName+'</td>');//in the employee array at index
+  table.append('<td>'+allEmployees[index].iDNumber+'</td>');//.something
   table.append('<td>'+allEmployees[index].title+'</td>');
   table.append('<td class="salaryInTable">'+allEmployees[index].salary+'</td>');
-  table.append('<td><button class="deleteButton">Delete</button> </td>');
+  table.append('<td><button class="deleteButton employeeRow">Delete</button> </td>');
 
   $('#table').append(table);
 }
@@ -93,10 +95,18 @@ function checkIfOverBudget(){
     $('#totalSalaryH3').addClass('red');
   }
 }
-
+//there has to be a way to associate the button with the row...
+//can count the number of rows and use dom traveral..
 function deleteTheEmployee(){
   console.log('in deleteTheEmployee');
+  console.log($(this));
+  $(this).parent().parent().remove();
 }
 
+//find all things with the class salaryInTable
+function findSalaries(){
 
+  let blah = $('.salaryInTable').text();
+  console.log(blah);
+}
 //end
