@@ -3,6 +3,8 @@ console.log('in client.js');
 
 let allEmployees = [];
 
+let totalMonthlyExpenses=0;
+
 class Employee{
   constructor(firstNameIn, lastNameIn, iDNumberIn, titleIn, salaryIn){
     this.firstName = firstNameIn;
@@ -106,7 +108,9 @@ function deleteTheEmployee(){
 //find all things with the class salaryInTable
 function findSalaries(){
 
-  let blah = $('.salaryInTable').text();
-  console.log(blah);
+  totalMonthlyExpenses += parseInt($('.salaryInTable').text());
+  console.log('in findSalaries after parseInt' + totalMonthlyExpenses);
+  totalMonthlyExpenses=totalMonthlyExpenses/12;
+  console.log('in findSalaries after /12' + totalMonthlyExpenses);
 }
 //end
