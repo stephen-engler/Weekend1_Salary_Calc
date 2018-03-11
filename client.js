@@ -24,7 +24,7 @@ function readyNow(){
 }
 
 //gets the vals of user input
-//makes new employe class
+//makes new employee class
 function submitEmployees(){
   console.log('in submitEmployees');
   let firstName = $('#employeeFirstName').val();
@@ -32,19 +32,24 @@ function submitEmployees(){
   let iDNum = $('#employeeID').val();
   let title = $('#employeeTitle').val();
   let salary = $('#employeeSalary').val();
+  //checks inputs, if full creates new employee, adds to dom
+  if(checkInputs(firstName, lastName, iDNum, title, salary)){
+    console.log('firstName: ' + firstName + 'lastName ' + lastName + 'idnum '+
+                        iDNum + "title: " + title + 'salary: ' +salary);
+    let newEmployee = addEmployee(firstName, lastName, iDNum, title, salary);
 
-  console.log('firstName: ' + firstName + 'lastName ' + lastName + 'idnum '+
-                      iDNum + "title: " + title + 'salary: ' +salary);
-  let newEmployee = addEmployee(firstName, lastName, iDNum, title, salary);
+    clearInputs();//sets inputs to ''
+    addToDom(newEmployee);//takes new employee object and adds to dom
+    addSalaryToDom(monthlyCost());//takes in the monthly cost, appends to dom
+    checkIfOverBudget();//if over budget changes class to red
+  }//end if
+  else{
+    alert('Please fill out all Inputs');
+    clearInputs();
+  }//end else
+}//end submitEmployees
 
-  clearInputs();
-  addToDom(newEmployee);
-  addSalaryToDom(monthlyCost());
-  checkIfOverBudget();
-
-
-}
-
+//creates new employee from constructor, pushes it into allEmployees array
 function addEmployee(first, last, iD, title, salary){
   let newEmployee = new Employee(first, last, iD, title, salary);
   allEmployees.push(newEmployee);
@@ -52,8 +57,9 @@ function addEmployee(first, last, iD, title, salary){
 
   return newEmployee;
 
-}
+}//end addEmployee
 
+//sets inputs to ''
 function clearInputs(){
   $('#employeeFirstName').val('');
   $('#employeeLastName').val('');
@@ -65,27 +71,22 @@ function clearInputs(){
 //adds the newest employee to the table
 function addToDom(newEmployee){
 
-  let table = $('<tr class="employeeRow" data-salary = "'+newEmployee.salary+
-                '" data-id = "'+newEmployee.iDNumber+'"></tr>');//makes the initial table row
+  let table = $('<tr class="employeeRow dataTest" data-salary = "' + newEmployee.salary +
+                '" data-id = "' + newEmployee.iDNumber + '"></tr>');//makes the initial table row
 
 
-  table.append('<data value="'+newEmployee.salary+'">');
   table.append('<td>'+newEmployee.firstName+'</td>');
   table.append('<td>'+newEmployee.lastName+'</td>');
   table.append('<td>'+newEmployee.iDNumber+'</td>');
   table.append('<td>'+newEmployee.title+'</td>');
   table.append('<td class="salaryInTable">'+newEmployee.salary+'</td>');
-  table.append('<td><button class="deleteButton employeeRow">Delete</button> </td>');
-
-
-  $('#table').data(newEmployee.firstName , newEmployee.salary);
-
-  console.log('test for data: ' + $('#table').data(newEmployee.firstName));
+  table.append('<td><button class="deleteButton">Delete</button> </td>');
 
   $('#table').append(table);
-  console.log('in appendtoDom test table.data' + table.data('salary'));
+  // console.log('in appendtoDom test table.data' + table.data('salary'));
 }
 
+//loops through allEmployees array, adds up salary, divides by 12 and returns value
 function monthlyCost(){
   let monthCost=0;
   allEmployees.forEach(function(employee){
@@ -94,38 +95,63 @@ function monthlyCost(){
   monthCost=monthCost/12;
   monthCost=monthCost.toFixed(2);
   console.log('in montly Cost' + monthCost);
+
   return monthCost;
 }
 
+//appends salary to dom
 function addSalaryToDom(monthlyExpenses){
   //let monthlyExpenses = monthlyCost();
   $('#totalSalaryH3').text('Monthly Cost: '+ monthlyExpenses);
 }
 
+//if over buget changes class, else class is green
 function checkIfOverBudget(){
   if(monthlyCost()>20000){
-    $('#totalSalaryH3').addClass('red');
+    $('#totalSalaryH3').attr('class', 'red');
+  }
+  else {
+    $('#totalSalaryH3').attr('class', 'green');
   }
 }
 
+//on click gets salary and Id data, removes employee from array,
+//recalculates monthlyCost, removes row from table
 function deleteTheEmployee(){
   let salary = $(this).parent().parent().data("salary");
   let iDNumber = $(this).parent().parent().data("id");
 
+  //loops through array, finds employee with matching id and removes it.
   removeDeletedEmployeeFromArray(iDNumber);
 
   addSalaryToDom(monthlyCost());
-
+  //this is the button, its grandparent is the row, removes entire row
   $(this).parent().parent().remove();
 }
 
+//loops through array with findIndex, checks if id numbers match
+//splices out matching index
 function removeDeletedEmployeeFromArray(iDNumber){
   let index = allEmployees.findIndex(function(employee){
     return employee.iDNumber == iDNumber;
   });
   allEmployees.splice(index, 1);
-  console.log(allEmployees);
 }
+
+// checks if user filled out all inputs
+//returns true or false
+function checkInputs(first, last, iD, title, salary){
+  let empty = '';
+  if(first && last && iD && title && salary != empty){
+    console.log('true! no field empty');
+    return true;
+  }
+  else {
+    console.log('false, a field was empty');
+    return false;
+  }
+}
+
 
 
 //end
